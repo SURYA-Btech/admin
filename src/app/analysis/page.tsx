@@ -14,6 +14,7 @@ import {
   BarChart,
   Bar,
   ResponsiveContainer,
+  PieLabelRenderProps,
 } from "recharts";
 
 import StorageIcon from "@mui/icons-material/Storage";
@@ -60,6 +61,23 @@ export default function AnalyticsInsights() {
     month,
     SpeciesDetected: filteredSpeciesCounts[idx],
   }));
+
+  // Pie label render function typed according to Recharts expectations
+  const renderPieLabel = (props: PieLabelRenderProps) => {
+    const { payload, percent, x, y } = props;
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="#000"
+        fontSize={12}
+        textAnchor="middle"
+        dominantBaseline="central"
+      >
+        {`${payload.label} ${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
 
   return (
     <div className="flex min-h-screen bg-[#f7fafd]">
@@ -183,9 +201,11 @@ export default function AnalyticsInsights() {
                   cx="50%"
                   cy="50%"
                   outerRadius={70}
-                  label={({ label, percent }: { label: string; percent: number }) => `${label} ${(percent * 100).toFixed(0)}%`}
+                  label={renderPieLabel}
                 >
-                  {distribution.map((entry, index) => <Cell key={index} fill={entry.color} />)}
+                  {distribution.map((entry, index) => (
+                    <Cell key={index} fill={entry.color} />
+                  ))}
                 </Pie>
                 <Legend verticalAlign="bottom" height={36} />
               </PieChart>
@@ -228,7 +248,19 @@ export default function AnalyticsInsights() {
 }
 
 // StatCard component
-function StatCard({ label, value, note, icon, bgColor }: { label: string; value: string; note?: string; icon: React.ReactNode; bgColor: string; }) {
+function StatCard({
+  label,
+  value,
+  note,
+  icon,
+  bgColor,
+}: {
+  label: string;
+  value: string;
+  note?: string;
+  icon: React.ReactNode;
+  bgColor: string;
+}) {
   return (
     <div className={`rounded-xl shadow p-8 flex items-center gap-7 ${bgColor}`}>
       <div className="w-14 h-14 flex items-center justify-center rounded-full bg-white text-gray-900 text-3xl shadow-md">
