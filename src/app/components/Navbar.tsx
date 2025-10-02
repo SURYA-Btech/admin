@@ -10,7 +10,7 @@ import ShowChartIcon from "@mui/icons-material/ShowChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SecurityIcon from "@mui/icons-material/Security";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import Image from "next/image";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 // Mapping paths to suitable icons
@@ -50,7 +50,7 @@ export default function Navbar() {
     <aside className="h-full min-h-screen w-72 bg-white flex flex-col items-start py-8 px-6 shadow-lg rounded-tr-3xl rounded-br-3xl">
       {/* Logo */}
       <div className="flex items-center gap-3 mb-8">
-        <img src="/logo.png" alt="CMLRE" className="w-25 h-15 rounded-xl" />
+        <Image src="/logo.png" alt="CMLRE" className="w-25 h-15 rounded-xl" />
       </div>
 
       {/* Navigation */}
