@@ -29,7 +29,15 @@ const allMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"
 const totalUsers = [120, 175, 250, 340, 450, 600, 750, 892, 900];
 const activeUsers = [70, 110, 160, 220, 290, 410, 520, 634, 634];
 const speciesCounts = [2, 7, 13, 11, 15, 19, 24, 28, 27];
-const distribution = [
+
+// Define a type for pie chart data items
+type PieDataItem = {
+  label: string;
+  value: number;
+  color: string;
+};
+
+const distribution: PieDataItem[] = [
   { label: "eDNA", value: 38, color: "#2563eb" },
   { label: "Otolith", value: 29, color: "#16a34a" },
   { label: "Ocean Data", value: 20, color: "#ca8a04" },
@@ -62,8 +70,8 @@ export default function AnalyticsInsights() {
     SpeciesDetected: filteredSpeciesCounts[idx],
   }));
 
-  // Pie label render function typed according to Recharts expectations
-  const renderPieLabel = (props: PieLabelRenderProps) => {
+  // Pie label render function with explicitly typed payload
+  const renderPieLabel = (props: PieLabelRenderProps & { payload: PieDataItem }) => {
     const { payload, percent, x, y } = props;
     return (
       <text
