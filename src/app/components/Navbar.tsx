@@ -10,10 +10,10 @@ import ShowChartIcon from "@mui/icons-material/ShowChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SecurityIcon from "@mui/icons-material/Security";
-import Image from "next/image";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Image from "next/image";
 
-// Mapping paths to suitable icons
+
 const ICONS_MAP: Record<string, React.ReactNode> = {
   "/dashboard": <DashboardIcon />,
   "/users": <PeopleIcon />,
@@ -28,14 +28,12 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Logout handler
   const onLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     router.push("/");
   };
 
-  // Navigation links
   const navLinks = [
     { href: "/dashboard", label: "Dashboard" },
     { href: "/users", label: "User Management" },
@@ -50,7 +48,14 @@ export default function Navbar() {
     <aside className="h-full min-h-screen w-72 bg-white flex flex-col items-start py-8 px-6 shadow-lg rounded-tr-3xl rounded-br-3xl">
       {/* Logo */}
       <div className="flex items-center gap-3 mb-8">
-        <Image src="/logo.png" alt="CMLRE" className="w-25 h-15 rounded-xl" />
+        <div className="relative w-24 h-14">
+          <Image
+            src="/logo.png"
+            alt="CMLRE"
+            fill
+            className="rounded-xl object-cover"
+          />
+        </div>
       </div>
 
       {/* Navigation */}
@@ -77,20 +82,29 @@ export default function Navbar() {
         <LogoutIcon />
         Logout
       </button>
-
-      {/* System Status */}
-     
     </aside>
   );
 }
 
 // NavItem component
-function NavItem({ icon, label, href, active = false }: { icon: React.ReactNode; label: string; href: string; active?: boolean }) {
+function NavItem({
+  icon,
+  label,
+  href,
+  active = false,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  href: string;
+  active?: boolean;
+}) {
   return (
     <Link href={href} className="w-full">
       <button
         className={`flex items-center gap-3 w-full px-4 py-2.5 rounded-xl text-base font-medium transition ${
-          active ? "bg-gradient-to-r from-blue-900 to-blue-600 text-white shadow" : "text-blue-900 hover:bg-blue-50"
+          active
+            ? "bg-gradient-to-r from-blue-900 to-blue-600 text-white shadow"
+            : "text-blue-900 hover:bg-blue-50"
         }`}
       >
         {icon}

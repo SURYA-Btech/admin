@@ -30,7 +30,7 @@ const totalUsers = [120, 175, 250, 340, 450, 600, 750, 892, 900];
 const activeUsers = [70, 110, 160, 220, 290, 410, 520, 634, 634];
 const speciesCounts = [2, 7, 13, 11, 15, 19, 24, 28, 27];
 
-// Define a type for pie chart data items
+// Pie data type
 type PieDataItem = {
   label: string;
   value: number;
@@ -48,7 +48,10 @@ type UserFilterType = "both" | "total" | "active";
 
 export default function AnalyticsInsights() {
   const [userFilter, setUserFilter] = useState<UserFilterType>("both");
-  const [monthRange, setMonthRange] = useState<[number, number]>([0, allMonths.length - 1]);
+  const [monthRange, setMonthRange] = useState<[number, number]>([
+    0,
+    allMonths.length - 1,
+  ]);
 
   // Filter data based on month range
   const filteredMonths = allMonths.slice(monthRange[0], monthRange[1] + 1);
@@ -59,8 +62,15 @@ export default function AnalyticsInsights() {
   // LineChart data
   const userGrowthData = filteredMonths.map((month, idx) => {
     const obj: Record<string, number | string> = { month };
-    if (userFilter === "both" || userFilter === "total") obj["Total Users"] = filteredTotalUsers[idx];
-    if (userFilter === "both" || userFilter === "active") obj["Active Users"] = filteredActiveUsers[idx];
+
+    if (userFilter === "both" || userFilter === "total") {
+      obj["Total Users"] = filteredTotalUsers[idx];
+    }
+
+    if (userFilter === "both" || userFilter === "active") {
+      obj["Active Users"] = filteredActiveUsers[idx];
+    }
+
     return obj;
   });
 
@@ -70,9 +80,16 @@ export default function AnalyticsInsights() {
     SpeciesDetected: filteredSpeciesCounts[idx],
   }));
 
-  // Pie label render function with explicitly typed payload
-  const renderPieLabel = (props: PieLabelRenderProps & { payload: PieDataItem }) => {
+  // ✅ Type-safe Pie label renderer (Option 2)
+  const renderPieLabel = (
+    props: PieLabelRenderProps & { payload?: PieDataItem }
+  ) => {
     const { payload, percent, x, y } = props;
+
+    const safePercent = typeof percent === "number" ? percent : 0;
+
+    if (!payload) return null;
+
     return (
       <text
         x={x}
@@ -82,7 +99,7 @@ export default function AnalyticsInsights() {
         textAnchor="middle"
         dominantBaseline="central"
       >
-        {`${payload.label} ${(percent * 100).toFixed(0)}%`}
+        {`${payload.label} ${(safePercent * 100).toFixed(0)}%`}
       </text>
     );
   };
@@ -94,9 +111,10 @@ export default function AnalyticsInsights() {
       </aside>
 
       <main className="flex-1 p-10 overflow-auto">
-        <h3 className="text-3xl font-extrabold text-blue-700 mb-4">Analytics & Insights</h3>
+        <h3 className="text-3xl font-extrabold text-blue-700 mb-4">
+          Analytics & Insights
+        </h3>
 
-        {/* Stat Cards */}
         <div className="grid grid-cols-4 gap-6 mb-8">
           <StatCard
             label="Total Species Detected"
@@ -128,68 +146,92 @@ export default function AnalyticsInsights() {
           />
         </div>
 
-        {/* User Growth & Pie Chart */}
         <div className="grid grid-cols-2 gap-6 mb-6">
           {/* Line Chart */}
           <div className="bg-white rounded-2xl shadow p-6 flex flex-col">
             <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
               <div className="flex items-center text-2xl font-bold text-gray-800">
-                <TimelineIcon className="text-blue-600 mr-2" /> User Growth Trends
+                <TimelineIcon className="text-blue-600 mr-2" />
+                User Growth Trends
               </div>
 
-              {/* Filters */}
               <div className="flex flex-wrap gap-4 items-center">
-                <label htmlFor="userFilter" className="text-sm font-semibold text-gray-800">Show:</label>
+                <label className="text-sm font-semibold">Show:</label>
                 <select
-                  id="userFilter"
                   value={userFilter}
-                  onChange={(e) => setUserFilter(e.target.value as UserFilterType)}
-                  className="border border-gray-300 rounded-md px-3 py-1 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) =>
+                    setUserFilter(e.target.value as UserFilterType)
+                  }
+                  className="border rounded-md px-3 py-1 text-sm"
                 >
                   <option value="both">Both</option>
                   <option value="total">Total Users</option>
                   <option value="active">Active Users</option>
                 </select>
 
-                <label htmlFor="startMonth" className="text-sm font-semibold text-gray-800">From:</label>
+                <label className="text-sm font-semibold">From:</label>
                 <select
-                  id="startMonth"
                   value={monthRange[0]}
                   onChange={(e) => {
-                    const newStart = Math.min(Number(e.target.value), monthRange[1]);
+                    const newStart = Math.min(
+                      Number(e.target.value),
+                      monthRange[1]
+                    );
                     setMonthRange([newStart, monthRange[1]]);
                   }}
-                  className="border border-gray-300 rounded-md px-3 py-1 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="border rounded-md px-3 py-1 text-sm"
                 >
-                  {allMonths.map((m, i) => <option key={i} value={i}>{m}</option>)}
+                  {allMonths.map((m, i) => (
+                    <option key={i} value={i}>
+                      {m}
+                    </option>
+                  ))}
                 </select>
 
-                <label htmlFor="endMonth" className="text-sm font-semibold text-gray-800">To:</label>
+                <label className="text-sm font-semibold">To:</label>
                 <select
-                  id="endMonth"
                   value={monthRange[1]}
                   onChange={(e) => {
-                    const newEnd = Math.max(Number(e.target.value), monthRange[0]);
+                    const newEnd = Math.max(
+                      Number(e.target.value),
+                      monthRange[0]
+                    );
                     setMonthRange([monthRange[0], newEnd]);
                   }}
-                  className="border border-gray-300 rounded-md px-3 py-1 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="border rounded-md px-3 py-1 text-sm"
                 >
-                  {allMonths.map((m, i) => <option key={i} value={i}>{m}</option>)}
+                  {allMonths.map((m, i) => (
+                    <option key={i} value={i}>
+                      {m}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
 
             <ResponsiveContainer width="100%" height={180}>
               <LineChart data={userGrowthData}>
-                <XAxis dataKey="month" stroke="#444" />
-                <YAxis domain={[0, 1000]} stroke="#666" />
+                <XAxis dataKey="month" />
+                <YAxis domain={[0, 1000]} />
                 <Tooltip />
-                <Legend verticalAlign="bottom" height={30} />
+                <Legend verticalAlign="bottom" />
+
                 {(userFilter === "both" || userFilter === "total") && (
-                  <Line type="monotone" dataKey="Total Users" stroke="#2563eb" strokeWidth={2} />
+                  <Line
+                    type="monotone"
+                    dataKey="Total Users"
+                    stroke="#2563eb"
+                    strokeWidth={2}
+                  />
                 )}
+
                 {(userFilter === "both" || userFilter === "active") && (
-                  <Line type="monotone" dataKey="Active Users" stroke="#16a34a" strokeWidth={2} />
+                  <Line
+                    type="monotone"
+                    dataKey="Active Users"
+                    stroke="#16a34a"
+                    strokeWidth={2}
+                  />
                 )}
               </LineChart>
             </ResponsiveContainer>
@@ -197,9 +239,11 @@ export default function AnalyticsInsights() {
 
           {/* Pie Chart */}
           <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center">
-            <div className="flex items-center text-2xl font-bold text-gray-800 mb-4">
-              <PieChartIcon className="text-red-600 mr-2" /> Dataset Distribution
+            <div className="flex items-center text-2xl font-bold mb-4">
+              <PieChartIcon className="text-red-600 mr-2" />
+              Dataset Distribution
             </div>
+
             <ResponsiveContainer width={160} height={250}>
               <PieChart>
                 <Pie
@@ -215,40 +259,32 @@ export default function AnalyticsInsights() {
                     <Cell key={index} fill={entry.color} />
                   ))}
                 </Pie>
-                <Legend verticalAlign="bottom" height={36} />
+
+                <Legend verticalAlign="bottom" />
               </PieChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        {/* Bar Chart + System Performance */}
-        <div className="grid grid-cols-2 gap-6">
-          <div className="bg-white rounded-2xl shadow p-6">
-            <div className="flex items-center text-xl font-bold text-gray-800 mb-2">
-              <BarChartIcon className="text-blue-600 mr-2" /> Species Detection Over Time
-            </div>
-            <ResponsiveContainer width="100%" height={180}>
-              <BarChart data={speciesData}>
-                <XAxis dataKey="month" stroke="#444" />
-                <YAxis stroke="#666" />
-                <Tooltip />
-                <Bar dataKey="SpeciesDetected" fill="#2563eb" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+        {/* Bar Chart */}
+        <div className="bg-white rounded-2xl shadow p-6">
+          <div className="flex items-center text-xl font-bold mb-2">
+            <BarChartIcon className="text-blue-600 mr-2" />
+            Species Detection Over Time
           </div>
 
-          <div className="bg-white rounded-2xl shadow p-6">
-            <div className="flex items-center text-xl font-bold text-gray-800 mb-2">
-              <StorageIcon className="text-yellow-600 mr-2" /> System Performance
-            </div>
-            <p className="mb-2 text-gray-700">
-              API Response Times (ms): 115 <span className="text-green-700 font-bold">(optimal)</span>
-            </p>
-            <div className="h-5 bg-green-100 rounded-lg overflow-hidden">
-              <div className="bg-green-700 h-full rounded-lg" style={{ width: "75%" }} />
-            </div>
-            <p className="mt-3 text-gray-500 text-sm">Based on most recent 200 requests.</p>
-          </div>
+          <ResponsiveContainer width="100%" height={180}>
+            <BarChart data={speciesData}>
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Bar
+                dataKey="SpeciesDetected"
+                fill="#2563eb"
+                radius={[4, 4, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </main>
     </div>
@@ -271,12 +307,14 @@ function StatCard({
 }) {
   return (
     <div className={`rounded-xl shadow p-8 flex items-center gap-7 ${bgColor}`}>
-      <div className="w-14 h-14 flex items-center justify-center rounded-full bg-white text-gray-900 text-3xl shadow-md">
+      <div className="w-14 h-14 flex items-center justify-center rounded-full bg-white text-3xl shadow-md">
         {icon}
       </div>
       <div>
         <div className="text-sm font-bold text-white">{label}</div>
-        <div className="text-2xl font-extrabold mt-2 mb-1 text-white">{value}</div>
+        <div className="text-2xl font-extrabold mt-2 mb-1 text-white">
+          {value}
+        </div>
         {note && <div className="text-xs text-white/90">{note}</div>}
       </div>
     </div>
