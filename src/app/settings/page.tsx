@@ -9,6 +9,8 @@ import InfoIcon from "@mui/icons-material/Info";
 import CheckIcon from "@mui/icons-material/Check";
 import { useState } from "react";
 
+type SectionType = "general" | "security" | "email" | "data" | "integrations" | "notifications";
+
 export default function PlatformSettingsPage() {
   const [twoFactor, setTwoFactor] = useState(true);
   const [notifications, setNotifications] = useState({
@@ -18,7 +20,7 @@ export default function PlatformSettingsPage() {
     analysis: true,
   });
 
-  const [savedSections, setSavedSections] = useState({
+  const [savedSections, setSavedSections] = useState<Record<SectionType, boolean>>({
     general: false,
     security: false,
     email: false,
@@ -27,7 +29,7 @@ export default function PlatformSettingsPage() {
     notifications: false,
   });
 
-  function saveSection(section) {
+  function saveSection(section: SectionType) {
     setSavedSections((prev) => ({ ...prev, [section]: true }));
     setTimeout(() => {
       setSavedSections((prev) => ({ ...prev, [section]: false }));
@@ -42,7 +44,7 @@ export default function PlatformSettingsPage() {
 
       <div className="flex-1 p-10 overflow-auto">
         <h3 className="text-3xl font-extrabold text-sky-700 mb-1">Configure settings, and system preferences</h3>
-       
+
 
         <fieldset className="bg-white shadow rounded-2xl p-7 mb-6 border border-gray-200">
           <legend className="text-xl font-bold flex items-center gap-2 text-gray-900 mb-4">
@@ -264,7 +266,12 @@ export default function PlatformSettingsPage() {
   );
 }
 
-function SectionSave({ saved, onClick }) {
+interface SectionSaveProps {
+  saved: boolean;
+  onClick: () => void;
+}
+
+function SectionSave({ saved, onClick }: SectionSaveProps) {
   return (
     <div className="mt-4 flex items-center gap-3">
       <button
@@ -279,7 +286,12 @@ function SectionSave({ saved, onClick }) {
   );
 }
 
-function TwoFactorToggle({ checked, onChange }) {
+interface TwoFactorToggleProps {
+  checked: boolean;
+  onChange: () => void;
+}
+
+function TwoFactorToggle({ checked, onChange }: TwoFactorToggleProps) {
   return (
     <label className="inline-flex items-center ml-3 cursor-pointer">
       <input
@@ -290,16 +302,22 @@ function TwoFactorToggle({ checked, onChange }) {
       />
       <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:bg-blue-600 relative transition">
         <div
-          className={`absolute left-1 top-1 w-4 h-4 rounded-full bg-white transition-transform ${
-            checked ? "translate-x-5" : ""
-          }`}
+          className={`absolute left-1 top-1 w-4 h-4 rounded-full bg-white transition-transform ${checked ? "translate-x-5" : ""
+            }`}
         ></div>
       </div>
     </label>
   );
 }
 
-function NotificationRow({ label, desc, checked, onChange }) {
+interface NotificationRowProps {
+  label: string;
+  desc: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}
+
+function NotificationRow({ label, desc, checked, onChange }: NotificationRowProps) {
   return (
     <div className="flex items-center justify-between py-2">
       <div>
@@ -315,9 +333,8 @@ function NotificationRow({ label, desc, checked, onChange }) {
         />
         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:bg-blue-600 relative transition">
           <div
-            className={`absolute left-1 top-1 w-4 h-4 rounded-full bg-white transition-transform ${
-              checked ? "translate-x-5" : ""
-            }`}
+            className={`absolute left-1 top-1 w-4 h-4 rounded-full bg-white transition-transform ${checked ? "translate-x-5" : ""
+              }`}
           ></div>
         </div>
       </label>

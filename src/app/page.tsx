@@ -11,16 +11,16 @@ export default function AdminLogin() {
   const [adminId, setAdminId] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{adminId?: string; password?: string}>({});
+  // const [errors, setErrors] = useState<{adminId?: string; password?: string}>({});
   const router = useRouter();
 
   const validateForm = () => {
-    const newErrors: {adminId?: string; password?: string} = {};
+    const newErrors: { adminId?: string; password?: string } = {};
 
     if (!adminId.trim()) newErrors.adminId = "Admin ID is required";
     if (!password.trim()) newErrors.password = "Password is required";
 
-    setErrors(newErrors);
+    // setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
@@ -35,7 +35,8 @@ export default function AdminLogin() {
       localStorage.setItem("username", adminId);
       router.push("/dashboard");
     } catch {
-      setErrors({ adminId: "Login failed", password: "Please try again" });
+      // setErrors({ adminId: "Login failed", password: "Please try again" });
+      alert("Login failed");
     } finally {
       setIsLoading(false);
     }

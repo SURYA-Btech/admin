@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import Navbar from "../components/Navbar";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import ShieldIcon from "@mui/icons-material/Shield";
@@ -8,13 +8,31 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/PersonAdd";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
+import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Snackbar from "@mui/material/Snackbar";
 
+interface User {
+  initials: string;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+  department: string;
+  lastLogin: string;
+  contributions: number;
+}
+
+interface UserFormData {
+  name: string;
+  email: string;
+  role: string;
+  department: string;
+}
+
 export default function UserManagementPage() {
-  const [users, setUsers] = useState([
+  const [users, setUsers] = useState<User[]>([
     { initials: "DSC", name: "Dr. Sarah Chen", email: "s.chen@marinelab.org", role: "Researcher", status: "Active", department: "Marine Biology", lastLogin: "2 hours ago", contributions: 47 },
     { initials: "AR", name: "Alex Rivera", email: "a.rivera@university.edu", role: "Student", status: "Active", department: "Ocean Sciences", lastLogin: "1 day ago", contributions: 12 },
     { initials: "DMK", name: "Dr. Michael Kim", email: "m.kim@research.gov", role: "Admin", status: "Active", department: "Data Management", lastLogin: "30 minutes ago", contributions: 89 },
@@ -24,17 +42,17 @@ export default function UserManagementPage() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [formData, setFormData] = useState({ name: "", email: "", role: "Researcher", department: "" });
-  const [editingIndex, setEditingIndex] = useState(null);
+  const [formData, setFormData] = useState<UserFormData>({ name: "", email: "", role: "Researcher", department: "" });
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("All Roles");
   const [statusFilter, setStatusFilter] = useState("All Status");
 
   // Handle input
-  const handleInputChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
   // Add or Edit user
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.department) return alert("All fields are required");
 
@@ -56,19 +74,25 @@ export default function UserManagementPage() {
     setEditingIndex(null);
   };
 
-  const handleEdit = (index) => {
-    setFormData({ ...users[index] });
+  const handleEdit = (index: number) => {
+    const user = users[index];
+    setFormData({
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      department: user.department
+    });
     setEditingIndex(index);
     setModalOpen(true);
   };
 
-  const handleApprove = (index) => {
+  const handleApprove = (index: number) => {
     const updated = [...users];
     updated[index].status = "Active";
     setUsers(updated);
   };
 
-  const handleDelete = (index) => {
+  const handleDelete = (index: number) => {
     const updated = [...users];
     updated.splice(index, 1);
     setUsers(updated);
@@ -190,8 +214,13 @@ export default function UserManagementPage() {
   );
 }
 
+interface ModalProps {
+  children: React.ReactNode;
+  onClose: () => void;
+}
+
 // Modal Component
-function Modal({ children, onClose }) {
+function Modal({ children, onClose }: ModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative">
@@ -202,8 +231,14 @@ function Modal({ children, onClose }) {
   );
 }
 
+interface StatCardProps {
+  label: string;
+  value: number;
+  icon: React.ReactNode;
+}
+
 // StatCard component
-function StatCard({ label, value, icon }) {
+function StatCard({ label, value, icon }: StatCardProps) {
   return (
     <div className="relative rounded-xl shadow-md bg-white p-7 flex items-center gap-7 border border-blue-100">
       <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-blue-100 text-blue-700 shadow-sm">{icon}</div>

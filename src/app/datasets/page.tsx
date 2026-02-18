@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent, SyntheticEvent } from "react";
 import Navbar from "../components/Navbar";
 import StorageIcon from "@mui/icons-material/Storage";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -22,8 +22,72 @@ import CollectionsIcon from "@mui/icons-material/Collections";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import Snackbar from "@mui/material/Snackbar";
 
+interface Dataset {
+  name: string;
+  uploader: string;
+  uploadDate: string;
+  species: string;
+  type: string;
+  status: string;
+  location: string;
+  size: string;
+  fileFormat: string;
+  downloads: number;
+  details?: Record<string, string>;
+}
+
+interface OtolithForm {
+  otolithID: string;
+  scientificName: string;
+  sex: string;
+  lifeStage: string;
+  habitat: string;
+  platform: string;
+  stationID: string;
+  collectionMethod: string;
+  collectionDate: string;
+  decimalLatitude: string;
+  decimalLongitude: string;
+  locality: string;
+  collectionDepth: string;
+  stationDepth: string;
+  submittedBy: string;
+}
+
+interface LifeHistoryForm {
+  scientificName: string;
+  commonName: string;
+  family: string;
+  order: string;
+  genus: string;
+  species: string;
+  standardLength: string;
+  totalLength: string;
+  weight: string;
+  sex: string;
+  uploadedBy: string;
+  uploadDate: string;
+}
+
+interface TaxonomyForm {
+  scientificName: string;
+  commonName: string;
+  family: string;
+  order: string;
+  genus: string;
+  species: string;
+}
+
+interface EdnaForm {
+  species: string;
+  commonName: string;
+  readCount: string;
+  percentage: string;
+  abundance: string;
+}
+
 export default function DatasetManagementPage() {
-  const [datasets, setDatasets] = useState([
+  const [datasets, setDatasets] = useState<Dataset[]>([
     {
       name: "Pacific Kelp Forest eDNA 2024",
       uploader: "Dr. Sarah Chen",
@@ -76,17 +140,17 @@ export default function DatasetManagementPage() {
 
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [uploadType, setUploadType] = useState("");
-  const [uploadFile, setUploadFile] = useState(null);
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [step, setStep] = useState(1);
   const [fileFormatFilter, setFileFormatFilter] = useState("All");
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const handleSnackbarClose = (event, reason) => {
+  const handleSnackbarClose = (event: SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") return;
     setSnackbarOpen(false);
   };
 
-  const [otolithForm, setOtolithForm] = useState({
+  const [otolithForm, setOtolithForm] = useState<OtolithForm>({
     otolithID: "",
     scientificName: "",
     sex: "",
@@ -104,7 +168,7 @@ export default function DatasetManagementPage() {
     submittedBy: "",
   });
 
-  const [lifeHistoryForm, setLifeHistoryForm] = useState({
+  const [lifeHistoryForm, setLifeHistoryForm] = useState<LifeHistoryForm>({
     scientificName: "",
     commonName: "",
     family: "",
@@ -119,7 +183,7 @@ export default function DatasetManagementPage() {
     uploadDate: new Date().toISOString().slice(0, 10),
   });
 
-  const [taxonomyForm, setTaxonomyForm] = useState({
+  const [taxonomyForm, setTaxonomyForm] = useState<TaxonomyForm>({
     scientificName: "",
     commonName: "",
     family: "",
@@ -128,7 +192,7 @@ export default function DatasetManagementPage() {
     species: "",
   });
 
-  const [ednaForm, setEdnaForm] = useState({
+  const [ednaForm, setEdnaForm] = useState<EdnaForm>({
     species: "",
     commonName: "",
     readCount: "",
@@ -197,40 +261,42 @@ export default function DatasetManagementPage() {
     setStep(1);
   };
 
-  const handleUploadTypeChange = (e) => {
+  const handleUploadTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setUploadType(e.target.value);
   };
 
-  const handleFileChange = (e) => {
-    if (e.target.files.length) {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length) {
       setUploadFile(e.target.files[0]);
     }
   };
 
-  const handleOtolithInputChange = (e) => {
+  const handleOtolithInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setOtolithForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleLifeHistoryInputChange = (e) => {
+  /*
+  const handleLifeHistoryInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLifeHistoryForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleTaxonomyInputChange = (e) => {
+  const handleTaxonomyInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setTaxonomyForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleEdnaInputChange = (e) => {
+  const handleEdnaInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEdnaForm((prev) => ({ ...prev, [name]: value }));
   };
+  */
 
   const nextStep = () => setStep((s) => Math.min(s + 1, 3));
   const prevStep = () => setStep((s) => Math.max(s - 1, 1));
 
-  function formatBytes(bytes) {
+  function formatBytes(bytes: number) {
     if (bytes === 0) return "0 Bytes";
     const k = 1024,
       sizes = ["Bytes", "KB", "MB", "GB", "TB"];
@@ -238,7 +304,7 @@ export default function DatasetManagementPage() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   }
 
-  const submitOtolithForm = (e) => {
+  const submitOtolithForm = (e: FormEvent) => {
     e.preventDefault();
     if (!uploadFile) {
       alert("Please select a file to upload.");
@@ -248,15 +314,15 @@ export default function DatasetManagementPage() {
       alert("Please fill required fields.");
       return;
     }
-    const newDataset = {
+    const newDataset: Dataset = {
       name: uploadFile.name,
       uploader: otolithForm.submittedBy || "Unknown",
       uploadDate: new Date().toISOString().slice(0, 10),
-      species: otolithForm.species || "",
+      species: otolithForm.scientificName || "",
       type: "Otolith",
       status: "Active",
       size: formatBytes(uploadFile.size),
-      fileFormat: uploadFile.name.split(".").pop().toUpperCase(),
+      fileFormat: uploadFile.name.split(".").pop()?.toUpperCase() || "UNKNOWN",
       downloads: 0,
       location: otolithForm.locality || "Unknown",
       details: { ...otolithForm },
@@ -266,77 +332,7 @@ export default function DatasetManagementPage() {
     setSnackbarOpen(true);
   };
 
-  const submitLifeHistoryForm = (e) => {
-    e.preventDefault();
-    if (!uploadFile || !lifeHistoryForm.scientificName) {
-      alert("Please fill required fields and select a file.");
-      return;
-    }
-    const newDataset = {
-      name: uploadFile.name,
-      uploader: lifeHistoryForm.uploadedBy,
-      uploadDate: lifeHistoryForm.uploadDate,
-      species: lifeHistoryForm.scientificName,
-      type: "Life History Traits",
-      status: "Active",
-      location: "Unknown",
-      size: formatBytes(uploadFile.size),
-      fileFormat: uploadFile.name.split(".").pop().toUpperCase(),
-      downloads: 0,
-      details: { ...lifeHistoryForm },
-    };
-    setDatasets((prev) => [newDataset, ...prev]);
-    closeModal();
-    setSnackbarOpen(true);
-  };
-
-  const submitTaxonomyForm = (e) => {
-    e.preventDefault();
-    if (!taxonomyForm.scientificName) {
-      alert("Please fill Scientific Name.");
-      return;
-    }
-    const newDataset = {
-      name: taxonomyForm.scientificName,
-      uploader: "Unknown",
-      uploadDate: new Date().toISOString().slice(0, 10),
-      species: taxonomyForm.scientificName,
-      type: "Taxonomy",
-      status: "Active",
-      location: "Unknown",
-      size: "N/A",
-      fileFormat: "N/A",
-      downloads: 0,
-      details: { ...taxonomyForm },
-    };
-    setDatasets((prev) => [newDataset, ...prev]);
-    closeModal();
-    setSnackbarOpen(true);
-  };
-
-  const submitEdnaForm = (e) => {
-    e.preventDefault();
-    if (!uploadFile || !ednaForm.species) {
-      alert("Please fill required fields and select a file.");
-      return;
-    }
-    const newDataset = {
-      name: uploadFile.name,
-      uploader: "Unknown",
-      uploadDate: new Date().toISOString().slice(0, 10),
-      species: ednaForm.species,
-      type: "eDNA",
-      status: "Active",
-      location: "Unknown",
-      size: formatBytes(uploadFile.size),
-      fileFormat: uploadFile.name.split(".").pop().toUpperCase(),
-      downloads: 0,
-      details: { ...ednaForm },
-    };
-    setDatasets((prev) => [newDataset, ...prev]);
-    closeModal();
-    setSnackbarOpen(true);
-  };
+  /* Unused submit handlers removed */
 
   const filteredDatasets =
     fileFormatFilter === "All"
@@ -413,9 +409,8 @@ export default function DatasetManagementPage() {
                   </td>
                   <td>
                     <span
-                      className={`px-3 py-1 text-xs rounded-full font-semibold ${
-                        d.status === "Active" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
-                      }`}
+                      className={`px-3 py-1 text-xs rounded-full font-semibold ${d.status === "Active" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
+                        }`}
                     >
                       {d.status}
                     </span>
@@ -650,7 +645,13 @@ export default function DatasetManagementPage() {
   );
 }
 
-function Modal({ open, onClose, children }) {
+interface ModalProps {
+  open: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+function Modal({ open, onClose, children }: ModalProps) {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
@@ -668,7 +669,11 @@ function Modal({ open, onClose, children }) {
   );
 }
 
-function Tag({ type }) {
+interface TagProps {
+  type: string;
+}
+
+function Tag({ type }: TagProps) {
   let classes = "";
   const text = type;
   if (type === "eDNA") classes = "bg-blue-100 text-blue-700";

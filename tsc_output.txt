@@ -1,0 +1,41 @@
+﻿src/app/datasets/page.tsx(319,28): error TS2339: Property 'species' does not exist on type 'OtolithForm'.
+src/app/reports/page.tsx(109,12): error TS2741: Property 'textColor' is missing in type '{ label: string; value: number; icon: Element; bgColor: string; }' but required in type '{ label: any; value: any; icon: any; bgColor: any; textColor: any; }'.
+src/app/reports/page.tsx(194,24): error TS7031: Binding element 'color' implicitly has an 'any' type.
+src/app/reports/page.tsx(194,31): error TS7031: Binding element 'icon' implicitly has an 'any' type.
+src/app/reports/page.tsx(194,37): error TS7031: Binding element 'label' implicitly has an 'any' type.
+src/app/reports/page.tsx(205,22): error TS7031: Binding element 'report' implicitly has an 'any' type.
+src/app/reports/page.tsx(205,30): error TS7031: Binding element 'generateBtnColor' implicitly has an 'any' type.
+src/app/reports/page.tsx(212,29): error TS7006: Parameter 't' implicitly has an 'any' type.
+src/app/reports/page.tsx(212,32): error TS7006: Parameter 'i' implicitly has an 'any' type.
+src/app/reports/page.tsx(242,22): error TS7031: Binding element 'icon' implicitly has an 'any' type.
+src/app/reports/page.tsx(242,28): error TS7031: Binding element 'color' implicitly has an 'any' type.
+src/app/reports/page.tsx(242,35): error TS7031: Binding element 'title' implicitly has an 'any' type.
+src/app/reports/page.tsx(252,21): error TS7031: Binding element 'label' implicitly has an 'any' type.
+src/app/reports/page.tsx(252,28): error TS7031: Binding element 'value' implicitly has an 'any' type.
+src/app/reports/page.tsx(252,35): error TS7031: Binding element 'icon' implicitly has an 'any' type.
+src/app/reports/page.tsx(252,41): error TS7031: Binding element 'bgColor' implicitly has an 'any' type.
+src/app/reports/page.tsx(252,50): error TS7031: Binding element 'textColor' implicitly has an 'any' type.
+src/app/security/page.tsx(60,12): error TS2741: Property 'subLabel' is missing in type '{ label: string; value: string; icon: Element; bgColor: string; textColor: string; }' but required in type '{ label: any; value: any; icon: any; bgColor: any; textColor: any; subLabel: any; }'.
+src/app/security/page.tsx(67,12): error TS2741: Property 'subLabel' is missing in type '{ label: string; value: string; icon: Element; bgColor: string; textColor: string; }' but required in type '{ label: any; value: any; icon: any; bgColor: any; textColor: any; subLabel: any; }'.
+src/app/security/page.tsx(74,12): error TS2741: Property 'subLabel' is missing in type '{ label: string; value: string; icon: Element; bgColor: string; textColor: string; }' but required in type '{ label: any; value: any; icon: any; bgColor: any; textColor: any; subLabel: any; }'.
+src/app/security/page.tsx(215,21): error TS7031: Binding element 'label' implicitly has an 'any' type.
+src/app/security/page.tsx(215,28): error TS7031: Binding element 'value' implicitly has an 'any' type.
+src/app/security/page.tsx(215,35): error TS7031: Binding element 'icon' implicitly has an 'any' type.
+src/app/security/page.tsx(215,41): error TS7031: Binding element 'bgColor' implicitly has an 'any' type.
+src/app/security/page.tsx(215,50): error TS7031: Binding element 'textColor' implicitly has an 'any' type.
+src/app/security/page.tsx(215,61): error TS7031: Binding element 'subLabel' implicitly has an 'any' type.
+src/app/security/page.tsx(228,26): error TS7031: Binding element 'severity' implicitly has an 'any' type.
+src/app/security/page.tsx(242,24): error TS7031: Binding element 'status' implicitly has an 'any' type.
+src/app/settings/page.tsx(30,24): error TS7006: Parameter 'section' implicitly has an 'any' type.
+src/app/settings/page.tsx(229,26): error TS7006: Parameter 'v' implicitly has an 'any' type.
+src/app/settings/page.tsx(235,26): error TS7006: Parameter 'v' implicitly has an 'any' type.
+src/app/settings/page.tsx(241,26): error TS7006: Parameter 'v' implicitly has an 'any' type.
+src/app/settings/page.tsx(247,26): error TS7006: Parameter 'v' implicitly has an 'any' type.
+src/app/settings/page.tsx(267,24): error TS7031: Binding element 'saved' implicitly has an 'any' type.
+src/app/settings/page.tsx(267,31): error TS7031: Binding element 'onClick' implicitly has an 'any' type.
+src/app/settings/page.tsx(282,28): error TS7031: Binding element 'checked' implicitly has an 'any' type.
+src/app/settings/page.tsx(282,37): error TS7031: Binding element 'onChange' implicitly has an 'any' type.
+src/app/settings/page.tsx(302,28): error TS7031: Binding element 'label' implicitly has an 'any' type.
+src/app/settings/page.tsx(302,35): error TS7031: Binding element 'desc' implicitly has an 'any' type.
+src/app/settings/page.tsx(302,41): error TS7031: Binding element 'checked' implicitly has an 'any' type.
+src/app/settings/page.tsx(302,50): error TS7031: Binding element 'onChange' implicitly has an 'any' type.

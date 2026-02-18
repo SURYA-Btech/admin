@@ -12,12 +12,28 @@ import ShareIcon from "@mui/icons-material/Share";
 import EmailIcon from "@mui/icons-material/Email";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import { useState } from "react";
+import { useState, ReactNode } from "react";
+
+interface ReportTag {
+  text: string;
+  color: string;
+}
+
+interface Report {
+  icon: ReactNode;
+  title: string;
+  tags: ReportTag[];
+  desc: string;
+  last: string;
+  schedule: string;
+  format: string;
+  btn: string;
+}
 
 export default function ReportsAnalyticsPage() {
   const generateBtnColor = "bg-sky-600 hover:bg-sky-700";
 
-  const [reports] = useState([
+  const [reports] = useState<Report[]>([
     {
       icon: <BarChartIcon fontSize="medium" className="text-gray-400" />,
       title: "Monthly User Activity Report",
@@ -114,21 +130,21 @@ export default function ReportsAnalyticsPage() {
           />
           <StatCard
             label="Ready"
-            value="3"
+            value={3} // Changed from string to number to match interface
             icon={<DownloadIcon className="text-teal-600" />}
             bgColor="bg-green-100"
             textColor="text-teal-700"
           />
           <StatCard
             label="Generating"
-            value="1"
+            value={1} // Changed from string to number to match interface
             icon={<ScheduleIcon className="text-yellow-600" />}
             bgColor="bg-yellow-100"
             textColor="text-yellow-700"
           />
           <StatCard
             label="Scheduled"
-            value="1"
+            value={1} // Changed from string to number to match interface
             icon={<ScheduleIcon className="text-blue-500" />}
             bgColor="bg-blue-100"
             textColor="text-blue-700"
@@ -139,22 +155,22 @@ export default function ReportsAnalyticsPage() {
         <div className="mb-8">
           <h2 className="text-xl font-bold text-gray-900 mb-2">Quick Report Generation</h2>
           <div className="grid grid-cols-3 gap-6 bg-sky-50 p-4 rounded-lg">
-  <QuickButton
-    color="bg-gray-100"
-    icon={<BarChartIcon fontSize="medium" className="mr-2 text-gray-700" />}
-    label="User Activity"
-  />
-  <QuickButton
-    color="bg-gray-100"
-    icon={<InsertChartIcon fontSize="medium" className="mr-2 text-gray-700" />}
-    label="Dataset Usage"
-  />
-  <QuickButton
-    color="bg-gray-100"
-    icon={<AutoGraphIcon fontSize="medium" className="mr-2 text-gray-700" />}
-    label="Platform Analytics"
-  />
-</div>
+            <QuickButton
+              color="bg-gray-100"
+              icon={<BarChartIcon fontSize="medium" className="mr-2 text-gray-700" />}
+              label="User Activity"
+            />
+            <QuickButton
+              color="bg-gray-100"
+              icon={<InsertChartIcon fontSize="medium" className="mr-2 text-gray-700" />}
+              label="Dataset Usage"
+            />
+            <QuickButton
+              color="bg-gray-100"
+              icon={<AutoGraphIcon fontSize="medium" className="mr-2 text-gray-700" />}
+              label="Platform Analytics"
+            />
+          </div>
 
         </div>
 
@@ -190,8 +206,14 @@ export default function ReportsAnalyticsPage() {
   );
 }
 
+interface QuickButtonProps {
+  color: string;
+  icon: ReactNode;
+  label: string;
+}
+
 // Quick Button
-function QuickButton({ color, icon, label }) {
+function QuickButton({ color, icon, label }: QuickButtonProps) {
   return (
     <button
       className={`rounded-xl shadow-md h-20 text-lg font-bold flex-1 flex items-center justify-center ${color} text-gray-700 hover:bg-gray-200 transition`}
@@ -201,8 +223,13 @@ function QuickButton({ color, icon, label }) {
   );
 }
 
+interface ReportRowProps {
+  report: Report;
+  generateBtnColor: string;
+}
+
 // Report Row
-function ReportRow({ report, generateBtnColor }) {
+function ReportRow({ report, generateBtnColor }: ReportRowProps) {
   return (
     <div className="flex items-center bg-gray-50 rounded-xl p-5 shadow-sm hover:border-blue-200 transition border border-transparent">
       <div className="mr-6">{report.icon}</div>
@@ -238,8 +265,14 @@ function ReportRow({ report, generateBtnColor }) {
   );
 }
 
+interface ActionBtnProps {
+  icon: ReactNode;
+  color: string;
+  title: string;
+}
+
 // Action button
-function ActionBtn({ icon, color, title }) {
+function ActionBtn({ icon, color, title }: ActionBtnProps) {
   return (
     <button className={`${color} rounded-full p-2 transition`} title={title}>
       {icon}
@@ -247,9 +280,16 @@ function ActionBtn({ icon, color, title }) {
   );
 }
 
+interface StatCardProps {
+  label: string;
+  value: number;
+  icon: ReactNode;
+  bgColor: string;
+  textColor?: string;
+}
+
 // Stat Card
-// Stat Card
-function StatCard({ label, value, icon, bgColor, textColor }) {
+function StatCard({ label, value, icon, bgColor, textColor }: StatCardProps) {
   return (
     <div className="rounded-xl shadow bg-white p-6 flex items-center gap-6 border border-slate-200">
       {/* Icon circle with color */}

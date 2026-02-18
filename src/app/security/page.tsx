@@ -8,6 +8,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import SearchIcon from "@mui/icons-material/Search";
 import CheckIcon from "@mui/icons-material/Check";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { ReactNode } from "react";
 
 export default function SecurityCenterPage() {
   const events = [
@@ -52,7 +53,7 @@ export default function SecurityCenterPage() {
       <div className="flex-1 p-10 overflow-auto">
         {/* Title & Desc */}
         <div className="mb-3">
-         
+
         </div>
 
         {/* Stat Cards Row */}
@@ -212,7 +213,16 @@ export default function SecurityCenterPage() {
   );
 }
 
-function StatCard({ label, value, icon, bgColor, textColor, subLabel }) {
+interface StatCardProps {
+  label: string;
+  value: string;
+  icon: ReactNode;
+  bgColor: string;
+  textColor: string;
+  subLabel?: string;
+}
+
+function StatCard({ label, value, icon, bgColor, textColor, subLabel }: StatCardProps) {
   return (
     <div className={`rounded-xl shadow p-6 flex items-center gap-6 ${bgColor}`}>
       <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-white/20">{icon}</div>
@@ -225,13 +235,17 @@ function StatCard({ label, value, icon, bgColor, textColor, subLabel }) {
   );
 }
 
-function SeverityBadge({ severity }) {
+interface SeverityBadgeProps {
+  severity: string;
+}
+
+function SeverityBadge({ severity }: SeverityBadgeProps) {
   const color =
     severity === "HIGH"
       ? "bg-orange-100 text-orange-600"
       : severity === "MEDIUM"
-      ? "bg-blue-100 text-blue-700"
-      : "bg-green-100 text-green-700";
+        ? "bg-blue-100 text-blue-700"
+        : "bg-green-100 text-green-700";
   return (
     <span className={`px-3 py-1 text-xs font-bold rounded-full ${color}`}>
       {severity}
@@ -239,13 +253,17 @@ function SeverityBadge({ severity }) {
   );
 }
 
-function StatusBadge({ status }) {
+interface StatusBadgeProps {
+  status: string;
+}
+
+function StatusBadge({ status }: StatusBadgeProps) {
   const color =
     status === "active"
       ? "bg-red-100 text-red-500"
       : status === "investigating"
-      ? "bg-yellow-100 text-yellow-700"
-      : "bg-green-100 text-green-700";
+        ? "bg-yellow-100 text-yellow-700"
+        : "bg-green-100 text-green-700";
   return (
     <span className={`px-3 py-1 text-xs font-semibold rounded-full ${color}`}>
       {status}

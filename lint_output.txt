@@ -1,0 +1,32 @@
+﻿
+> admin@0.1.0 lint
+> eslint
+
+
+C:\code space\admin\src\app\dashboard\page.tsx
+   13:8   warning  'BackupIcon' is defined but never used      @typescript-eslint/no-unused-vars
+   14:8   warning  'AccessTimeIcon' is defined but never used  @typescript-eslint/no-unused-vars
+  266:47  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  279:20  warning  'initials' is defined but never used        @typescript-eslint/no-unused-vars
+  279:36  warning  'email' is defined but never used           @typescript-eslint/no-unused-vars
+  292:24  warning  'icon' is defined but never used            @typescript-eslint/no-unused-vars
+  292:50  warning  'tag' is defined but never used             @typescript-eslint/no-unused-vars
+  292:63  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  302:45  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+
+C:\code space\admin\src\app\datasets\page.tsx
+  279:9  warning  'handleLifeHistoryInputChange' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  284:9  warning  'handleTaxonomyInputChange' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  289:9  warning  'handleEdnaInputChange' is assigned a value but never used         @typescript-eslint/no-unused-vars
+  333:9  warning  'submitLifeHistoryForm' is assigned a value but never used         @typescript-eslint/no-unused-vars
+  357:9  warning  'submitTaxonomyForm' is assigned a value but never used            @typescript-eslint/no-unused-vars
+  381:9  warning  'submitEdnaForm' is assigned a value but never used                @typescript-eslint/no-unused-vars
+
+C:\code space\admin\src\app\page.tsx
+  14:10  warning  'errors' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\code space\admin\src\app\users\page.tsx
+  11:8  warning  'CancelIcon' is defined but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 17 problems (3 errors, 14 warnings)
+
